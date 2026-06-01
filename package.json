@@ -1,0 +1,13 @@
+{
+  "name": "cartback",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "api:dev": "cd apps/api && npm run dev",
+    "api:start": "cd apps/api && npm start"
+  }
+}
