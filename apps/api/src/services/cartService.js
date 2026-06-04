@@ -159,17 +159,21 @@ async function upsertCart(clientId, customerId, cartData) {
   }
 
   // Increment client's monthly cart counter
-  await supabase.rpc('increment_counter', {
+  const { error: rpcError } = await supabase.rpc('increment_counter', {
     row_id: clientId,
     column_name: 'carts_tracked_this_month',
-  }).catch(() => {
-    // Fallback: manual increment
-    supabase
-      .from('clients')
-      .update({ carts_tracked_this_month: (cartData._currentCount || 0) + 1 })
-      .eq('id', clientId)
-      .then(() => {});
   });
+  if (rpcError) {
+    const { data: cl } = await supabase
+      .from('clients')
+      .select('carts_tracked_this_month')
+      .eq('id', clientId)
+      .single();
+    await supabase
+      .from('clients')
+      .update({ carts_tracked_this_month: (cl?.carts_tracked_this_month || 0) + 1 })
+      .eq('id', clientId);
+  }
 
   return { cart, isNew: true };
 }
