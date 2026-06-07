@@ -13,7 +13,11 @@ app.use(helmet());
 
 // CORS — allow dashboard frontend
 app.use(cors({
-  origin: [env.FRONTEND_URL, 'http://localhost:3000'],
+  origin: [
+    env.FRONTEND_URL,
+    'http://localhost:3000',
+    'https://project-cart-back-web.vercel.app',
+  ],
   credentials: true,
 }));
 
