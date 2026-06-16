@@ -14,11 +14,7 @@ app.use(helmet());
 // CORS — allow dashboard frontend
 app.use(cors({
   origin: function(origin, callback) {
-    const allowed = [
-      'http://localhost:3000',
-      'https://project-cart-back-web.vercel.app',
-    ];
-    if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+    if (!origin || origin.endsWith('.vercel.app') || origin === 'http://localhost:3000') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
